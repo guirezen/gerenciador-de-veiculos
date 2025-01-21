@@ -1,7 +1,20 @@
--- Inserção de Dados Iniciais
-INSERT INTO veiculo (modelo, fabricante, ano, preco, tipo_veiculo) VALUES ('Civic', 'Honda', 2020, 90000.00, 'carro'),
-                                                                          ('CG 160', 'Honda', 2022, 12000.00, 'moto');
+-- Usar o esquema padrão
+SET search_path TO gerenciador_veiculos;
 
-INSERT INTO carro (id, quantidade_portas, tipo_combustivel) VALUES (1, 4, 'flex');
+-- Inserção de veículos genéricos
+INSERT INTO veiculos (modelo, fabricante, ano, preco, tipo)
+VALUES
+    ('Onix', 'Chevrolet', 2021, 50000.00, 'carro'),
+    ('Civic', 'Honda', 2020, 80000.00, 'carro'),
+    ('XRE 300', 'Honda', 2022, 20000.00, 'moto');
 
-INSERT INTO moto (id, cilindrada) VALUES (2, 160);
+-- Inserção de dados específicos de carros
+INSERT INTO carros (veiculo_id, quantidade_portas, tipo_combustivel)
+VALUES
+    (1, 4, 'flex'),
+    (2, 4, 'gasolina');
+
+-- Inserção de dados específicos de motos
+INSERT INTO motos (veiculo_id, cilindrada)
+VALUES
+    (3, 300);
