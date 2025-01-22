@@ -6,11 +6,24 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: root
-      POSTGRES_DB: gerenciamento_veiculos
+      POSTGRES_DB: gerenciador_veiculos
     ports:
       - '5433:5432'
     volumes:
       - db_data:/var/lib/postgresql/data
 
+  db_test:
+    image: postgres:15
+    container_name: gerenciador_veiculos_test
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: gerenciador_veiculos_test
+    ports:
+      - '5433:5432'
+    volumes:
+      - db_test_data:/var/lib/postgresql/data
+
 volumes:
   db_data:
+  db_test_data:

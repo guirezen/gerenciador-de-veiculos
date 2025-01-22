@@ -49,28 +49,28 @@ public class VeiculoDAO {
     }
 
     public List<Veiculo> consultarVeiculosPorFiltro(String tipo, String modelo, Integer ano) {
-        String sql = """
-            SELECT * FROM veiculos 
-            WHERE (? = '' OR tipo = ?)
-                AND (? = '' OR modelo ILIKE ?)
-                AND (? IS NULL OR ano = ?)
-        """;
-
+        StringBuilder sql = new StringBuilder("SELECT * FROM veiculos WHERE 1=1");
+        List<Object> parametros = new ArrayList<>();
         List<Veiculo> veiculos = new ArrayList<>();
 
-        try(Connection connection = DatabaseConnection.getConnection();
-            PreparedStatement stmt = connection.prepareStatement(sql)) {
+        if (tipo != null && !tipo.isEmpty()) {
+            sql.append(" AND tipo = ?");
+            parametros.add(tipo);
+        }
+        if (modelo != null && !modelo.isEmpty()) {
+            sql.append(" AND modelo ILIKE ?");
+            parametros.add("%" + modelo + "%");
+        }
+        if (ano != null) {
+            sql.append(" AND ano = ?");
+            parametros.add(ano);
+        }
 
-            stmt.setString(1, tipo);
-            stmt.setString(2, tipo);
-            stmt.setString(3, modelo);
-            stmt.setString(4, "%" + modelo + "%");
-            if (ano == null) {
-                stmt.setNull(5, java.sql.Types.INTEGER);
-                stmt.setNull(6, java.sql.Types.INTEGER);
-            } else {
-                stmt.setInt(5, ano);
-                stmt.setInt(6, ano);
+        try(Connection connection = DatabaseConnection.getConnection();
+            PreparedStatement stmt = connection.prepareStatement(sql.toString())) {
+
+            for (int i = 0; i < parametros.size(); i++) {
+                stmt.setObject(i + 1, parametros.get(i));
             }
 
             try(ResultSet rs = stmt.executeQuery()) {
