@@ -48,28 +48,54 @@ public class VeiculoDAO {
         return new ArrayList<>();
     }
 
-    public List<Veiculo> consultarVeiculosPorFiltro(String tipo, String modelo, int ano) {
-        String sql = "SELECT * FROM veiculos WHERE tipo = ? AND modelo LIKE ? AND ano = ?";
+    public List<Veiculo> consultarVeiculosPorFiltro(String tipo, String modelo, Integer ano) {
+        String sql = """
+            SELECT * FROM veiculos 
+            WHERE (? = '' OR tipo = ?)
+                AND (? = '' OR modelo ILIKE ?)
+                AND (? IS NULL OR ano = ?)
+        """;
+
+        List<Veiculo> veiculos = new ArrayList<>();
 
         try(Connection connection = DatabaseConnection.getConnection();
             PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setString(1, tipo);
-            stmt.setString(2, "%" + modelo + "%");
-            stmt.setInt(3, ano);
+            stmt.setString(2, tipo);
+            stmt.setString(3, modelo);
+            stmt.setString(4, "%" + modelo + "%");
+            if (ano == null) {
+                stmt.setNull(5, java.sql.Types.INTEGER);
+                stmt.setNull(6, java.sql.Types.INTEGER);
+            } else {
+                stmt.setInt(5, ano);
+                stmt.setInt(6, ano);
+            }
 
             try(ResultSet rs = stmt.executeQuery()) {
-                return mapearVeiculos(rs);
+                while (rs.next()) {
+                    Veiculo veiculo = new Veiculo();
+
+                    veiculo.setId(rs.getInt("id"));
+                    veiculo.setModelo(rs.getString("modelo"));
+                    veiculo.setFabricante(rs.getString("fabricante"));
+                    veiculo.setAno(rs.getInt("ano"));
+                    veiculo.setPreco(rs.getDouble("preco"));
+                    veiculo.setTipo(rs.getString("tipo"));
+
+                    veiculos.add(veiculo);
+                }
             }
 
         } catch (SQLException e) {
             System.err.println("Erro ao obter a lista de veículos por filtro: " + e.getMessage());
         }
 
-        return new ArrayList<>();
+        return veiculos;
     }
 
-    public void atualizarVeiculos(int id, String modelo, String fabricante, int ano, double preco) {
+    public void atualizarVeiculo(int id, String modelo, String fabricante, int ano, double preco) {
         String sql = "UPDATE veiculos SET modelo = ?, fabricante = ?, ano = ?, preco = ? WHERE id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();

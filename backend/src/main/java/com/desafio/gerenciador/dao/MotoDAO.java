@@ -92,7 +92,7 @@ public class MotoDAO {
         return motos;
     }
 
-    public void atualizarMotos(Moto moto) {
+    public void atualizarMoto(Moto moto) {
         String sqlVeiculo = """
                 UPDATE veiculos SET modelo = ?, fabricante = ?, ano = ?, preco = ?
                 WHERE veiculo_id = ?
