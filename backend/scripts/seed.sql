@@ -1,6 +1,8 @@
 -- Usar o esquema padrão
 SET search_path TO gerenciador_veiculos;
 
+TRUNCATE TABLE veiculos, carros, motos RESTART IDENTITY;
+
 -- Inserção de veículos genéricos
 INSERT INTO veiculos (modelo, fabricante, ano, preco, tipo)
 VALUES

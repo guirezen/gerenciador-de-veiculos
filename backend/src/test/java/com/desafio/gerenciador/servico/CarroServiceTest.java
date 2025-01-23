@@ -2,6 +2,7 @@ package com.desafio.gerenciador.servico;
 
 import com.desafio.gerenciador.model.Carro;
 import com.desafio.gerenciador.service.CarroService;
+import com.desafio.gerenciador.utils.DatabaseTestUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ public class CarroServiceTest {
 
      @BeforeEach
      public void setup() {
+         DatabaseTestUtil.resetDatabase();
          carroService = new CarroService();
      }
 

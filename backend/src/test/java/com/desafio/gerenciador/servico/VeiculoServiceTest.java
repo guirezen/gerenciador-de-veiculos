@@ -18,8 +18,8 @@ public class VeiculoServiceTest {
 
     @BeforeEach
     public void setup() {
-        veiculoService = new VeiculoService();
         DatabaseTestUtil.resetDatabase();
+        veiculoService = new VeiculoService();
     }
 
     @Test
