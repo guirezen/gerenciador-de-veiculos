@@ -49,4 +49,18 @@ public class MotoServiceTest {
         List<Moto> motos = motoService.listarMotos();
         Assertions.assertNotNull(motos);
     }
+
+    @Test
+    public void testAtualizarMoto() {
+        Moto moto = new Moto();
+        moto.setId(3);
+        moto.setModelo("XRE 350");
+        moto.setFabricante("Honda");
+        moto.setAno(2023);
+        moto.setPreco(28000.0);
+        moto.setTipo("moto");
+        moto.setCilindrada(350);
+
+        Assertions.assertDoesNotThrow(() -> motoService.atualizarMoto(moto));
+    }
 }

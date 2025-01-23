@@ -46,6 +46,33 @@ public class CarroServiceTest {
          Assertions.assertThrows(IllegalArgumentException.class, () -> carroService.cadastrarCarro(carro));
      }
 
+    @Test
+    public void testCadastrarCarroComTipoCombustivelNulo() {
+        Carro carro = new Carro();
+        carro.setModelo("Onix");
+        carro.setFabricante("Chevrolet");
+        carro.setAno(2021);
+        carro.setPreco(80000.0);
+        carro.setTipo("carro");
+        carro.setQuantidadePortas(4);
+        carro.setTipoCombustivel(null);
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> carroService.cadastrarCarro(carro));
+    }
+    @Test
+    public void testCadastrarCarroComTipoCombustivelVazio() {
+        Carro carro = new Carro();
+        carro.setModelo("Onix");
+        carro.setFabricante("Chevrolet");
+        carro.setAno(2021);
+        carro.setPreco(80000.0);
+        carro.setTipo("carro");
+        carro.setQuantidadePortas(4);
+        carro.setTipoCombustivel("");
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> carroService.cadastrarCarro(carro));
+    }
+
      @Test
     public void testListarCarros() {
          List<Carro> carros = carroService.listarCarros();
@@ -62,4 +89,19 @@ public class CarroServiceTest {
          Assertions.assertEquals(4, carro.getQuantidadePortas());
          Assertions.assertEquals("flex", carro.getTipoCombustivel());
      }
+
+    @Test
+    public void testAtualizarCarro() {
+        Carro carro = new Carro();
+        carro.setId(1);
+        carro.setModelo("Onix Atualizado");
+        carro.setFabricante("Chevrolet");
+        carro.setAno(2022);
+        carro.setPreco(85000.0);
+        carro.setTipo("carro");
+        carro.setQuantidadePortas(4);
+        carro.setTipoCombustivel("etanol");
+
+        Assertions.assertDoesNotThrow(() -> carroService.atualizarCarro(carro));
+    }
 }
