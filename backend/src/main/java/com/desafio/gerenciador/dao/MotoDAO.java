@@ -63,7 +63,7 @@ public class MotoDAO {
     public List<Moto> consultarTodasMotos() {
         List<Moto> motos = new ArrayList<>();
         String sql = """
-                SELECT v.id, v.modelo, v.fabricante, v.ano, v.preco, m.cilindrada
+                SELECT v.id, v.modelo, v.fabricante, v.ano, v.preco, v.tipo, m.cilindrada
                 FROM veiculos v 
                 JOIN motos m ON v.id = m.veiculo_id
                 """;
@@ -80,6 +80,7 @@ public class MotoDAO {
                 moto.setFabricante(rs.getString("fabricante"));
                 moto.setAno(rs.getInt("ano"));
                 moto.setPreco(rs.getDouble("preco"));
+                moto.setTipo(rs.getString("tipo"));
                 moto.setCilindrada(rs.getInt("cilindrada"));
 
                 motos.add(moto);
@@ -94,11 +95,11 @@ public class MotoDAO {
 
     public void atualizarMoto(Moto moto) {
         String sqlVeiculo = """
-                UPDATE veiculos SET modelo = ?, fabricante = ?, ano = ?, preco = ?
-                WHERE veiculo_id = ?
+                UPDATE veiculos SET modelo = ?, fabricante = ?, ano = ?, preco = ?, tipo = ?
+                WHERE id = ?
                 """;
         String sqlMoto = """
-                UPDATE moto SET cilindrada = ?
+                UPDATE motos SET cilindrada = ?
                 WHERE veiculo_id = ?
                 """;
 
@@ -110,7 +111,8 @@ public class MotoDAO {
             stmtVeiculo.setString(2, moto.getFabricante());
             stmtVeiculo.setInt(3, moto.getAno());
             stmtVeiculo.setDouble(4, moto.getPreco());
-            stmtVeiculo.setInt(5, moto.getId());
+            stmtVeiculo.setString(5, moto.getTipo());
+            stmtVeiculo.setInt(6, moto.getId());
 
             stmtVeiculo.executeUpdate();
 

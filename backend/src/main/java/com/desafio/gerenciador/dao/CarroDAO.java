@@ -28,7 +28,7 @@ public class CarroDAO {
     }
 
     private int inserirVeiculo(Carro carro, Connection connection) throws SQLException {
-        String sqlVeiculo = "INSERT INTO veiculos (modelo, fabricante, ano, preco, tipo) VALUES (?, ?, ?, ?, ?)";
+        String sqlVeiculo = "INSERT INTO veiculos (modelo, fabricante, ano, preco, tipo) VALUES (?, ?, ?, ?, ?) RETURNING id";
 
         try(PreparedStatement stmtVeiculo = connection.prepareStatement(sqlVeiculo)) {
             stmtVeiculo.setString(1, carro.getModelo());
@@ -62,7 +62,7 @@ public class CarroDAO {
     public List<Carro> consultarTodosCarros () {
         List<Carro> carros = new ArrayList<>();
         String sql = """
-            SELECT v.id, v.modelo, v.fabricante, v.ano, v.preco, c.quantidade_portas, c.tipo_combustivel
+            SELECT v.id, v.modelo, v.fabricante, v.ano, v.preco, v.tipo, c.quantidade_portas, c.tipo_combustivel
             FROM veiculos v
             JOIN carros c ON v.id = c.veiculo_id
           """;
@@ -79,6 +79,7 @@ public class CarroDAO {
                 carro.setFabricante(rs.getString("fabricante"));
                 carro.setAno(rs.getInt("ano"));
                 carro.setPreco(rs.getDouble("preco"));
+                carro.setTipo(rs.getString("tipo"));
                 carro.setQuantidadePortas(rs.getInt("quantidade_portas"));
                 carro.setTipoCombustivel(rs.getString("tipo_combustivel"));
 
@@ -94,8 +95,8 @@ public class CarroDAO {
 
     public void atualizarCarro(Carro carro) {
         String sqlVeiculo = """
-                    UPDATE veiculos SET modelo = ?, fabricante = ?, ano = ?, preco = ?
-                    WHERE veiculo_id = ?
+                    UPDATE veiculos SET modelo = ?, fabricante = ?, ano = ?, preco = ?, tipo = ?
+                    WHERE id = ?
                 """;
         String sqlCarro = """
                     UPDATE carros SET quantidade_portas = ?, tipo_combustivel = ?
@@ -110,7 +111,8 @@ public class CarroDAO {
             stmtVeiculo.setString(2, carro.getFabricante());
             stmtVeiculo.setInt(3, carro.getAno());
             stmtVeiculo.setDouble(4, carro.getPreco());
-            stmtVeiculo.setInt(5, carro.getId());
+            stmtVeiculo.setString(5, carro.getTipo());
+            stmtVeiculo.setInt(6, carro.getId());
             stmtVeiculo.executeUpdate();
 
             stmtCarro.setInt(1, carro.getQuantidadePortas());

@@ -8,11 +8,10 @@ services:
       POSTGRES_PASSWORD: root
       POSTGRES_DB: gerenciador_veiculos
     ports:
-      - '5433:5432'
+      - '5436:5432'
     volumes:
       - db_data:/var/lib/postgresql/data
-      - ./scripts/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
-      - ./scripts/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
+      - ./scripts:/docker-entrypoint-initdb.d
 
   db_test:
     image: postgres:15
@@ -25,7 +24,7 @@ services:
       - '5434:5432'
     volumes:
       - db_test_data:/var/lib/postgresql/data
-      - ./scripts:/docker-entrypoint-initdb.d/init_test.sql
+      - ./scripts:/docker-entrypoint-initdb.d
 
 volumes:
   db_data:
