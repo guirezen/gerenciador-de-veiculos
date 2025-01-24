@@ -1,6 +1,8 @@
 package com.desafio.gerenciador.service;
 
 import com.desafio.gerenciador.dao.VeiculoDAO;
+import com.desafio.gerenciador.model.Carro;
+import com.desafio.gerenciador.model.Moto;
 import com.desafio.gerenciador.model.Veiculo;
 
 import java.util.List;
@@ -15,8 +17,23 @@ public class VeiculoService {
     public void cadastrarVeiculo(Veiculo veiculo) {
         validarAtributosGerais(veiculo);
 
-        veiculoDao.inserirVeiculo(veiculo.getModelo(), veiculo.getFabricante(), veiculo.getAno(), veiculo.getPreco(), veiculo.getTipo());
+        if (veiculo.getTipo().equals("carro")) {
+            if (!(veiculo instanceof Carro)) {
+                throw new IllegalArgumentException("Os atributos específicos de Carro são obrigatórios.");
+            }
+            CarroService carroService = new CarroService();
+            carroService.cadastrarCarro((Carro) veiculo);
+        } else if (veiculo.getTipo().equals("moto")) {
+            if (!(veiculo instanceof Moto)) {
+                throw new IllegalArgumentException("Os atributos específicos de Moto são obrigatórios.");
+            }
+            MotoService motoService = new MotoService();
+            motoService.cadastrarMoto((Moto) veiculo);
+        } else {
+            throw new IllegalArgumentException("Tipo de veículo inválido. Deve ser 'carro' ou 'moto'.");
+        }
     }
+
 
     public List<Veiculo> listarVeiculos() {
         return veiculoDao.consultarTodosVeiculos();
@@ -41,13 +58,25 @@ public class VeiculoService {
     }
 
     public void atualizarVeiculo(Veiculo veiculo) {
-        if (veiculo.getId() <= 0) {
-            throw new IllegalArgumentException("ID inválido.");
-        }
         validarAtributosGerais(veiculo);
 
-        veiculoDao.atualizarVeiculo(veiculo.getId(), veiculo.getModelo(), veiculo.getFabricante(), veiculo.getAno(), veiculo.getPreco());
+        if (veiculo.getTipo().equals("carro")) {
+            if (!(veiculo instanceof Carro)) {
+                throw new IllegalArgumentException("Os atributos específicos de Carro são obrigatórios.");
+            }
+            CarroService carroService = new CarroService();
+            carroService.atualizarCarro((Carro) veiculo);
+        } else if (veiculo.getTipo().equals("moto")) {
+            if (!(veiculo instanceof Moto)) {
+                throw new IllegalArgumentException("Os atributos específicos de Moto são obrigatórios.");
+            }
+            MotoService motoService = new MotoService();
+            motoService.atualizarMoto((Moto) veiculo);
+        } else {
+            throw new IllegalArgumentException("Tipo de veículo inválido. Deve ser 'carro' ou 'moto'.");
+        }
     }
+
 
     public void removerVeiculo(int id) {
         if (id <= 0) {

@@ -7,16 +7,12 @@ import java.util.List;
 
 public class CarroService {
     private final CarroDAO carroDAO;
-    private final VeiculoService veiculoService;
 
     public CarroService() {
         this.carroDAO = new CarroDAO();
-        this.veiculoService = new VeiculoService();
     }
 
     public void cadastrarCarro(Carro carro) {
-        veiculoService.validarAtributosGerais(carro);
-
         if (carro.getQuantidadePortas() <= 0) {
             throw new IllegalArgumentException("Quantidade de portas inválida.");
         }
@@ -32,8 +28,6 @@ public class CarroService {
     }
 
     public void atualizarCarro(Carro carro) {
-        veiculoService.validarAtributosGerais(carro);
-
         if (carro.getQuantidadePortas() <= 0) {
             throw new IllegalArgumentException("Quantidade de portas inválidas.");
         }
