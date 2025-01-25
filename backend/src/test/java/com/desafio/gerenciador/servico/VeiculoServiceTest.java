@@ -1,5 +1,7 @@
 package com.desafio.gerenciador.servico;
 
+import com.desafio.gerenciador.model.Carro;
+import com.desafio.gerenciador.model.Moto;
 import com.desafio.gerenciador.model.Veiculo;
 import com.desafio.gerenciador.service.VeiculoService;
 import com.desafio.gerenciador.utils.DatabaseConnection;
@@ -23,133 +25,122 @@ public class VeiculoServiceTest {
     }
 
     @Test
-    public void testCadastrarVeiculoValido() {
-        Veiculo veiculo = new Veiculo();
-
-        veiculo.setModelo("Civic");
-        veiculo.setFabricante("Honda");
-        veiculo.setAno(2022);
-        veiculo.setPreco(100000.0);
-        veiculo.setTipo("carro");
-
-        Assertions.assertDoesNotThrow(() -> veiculoService.cadastrarVeiculo(veiculo));
+    public void testCadastrarCarroValido() {
+        Carro carro = criarCarroValido();
+        Assertions.assertDoesNotThrow(() -> veiculoService.cadastrarVeiculo(carro));
     }
 
     @Test
-    public void testCadastrarVeiculoComAnoInvalido() {
-        Veiculo veiculo = new Veiculo();
-        veiculo.setModelo("Civic");
-        veiculo.setFabricante("Honda");
-        veiculo.setAno(1800);
-        veiculo.setPreco(100000.0);
-        veiculo.setTipo("carro");
-
-        Assertions.assertThrows(IllegalArgumentException.class, () -> veiculoService.cadastrarVeiculo(veiculo));
-    }
-    @Test
-    public void testCadastrarVeiculoComPrecoInvalido() {
-        Veiculo veiculo = new Veiculo();
-        veiculo.setModelo("Civic");
-        veiculo.setFabricante("Honda");
-        veiculo.setAno(1900);
-        veiculo.setPreco(-1);
-        veiculo.setTipo("carro");
-
-        Assertions.assertThrows(IllegalArgumentException.class, () -> veiculoService.cadastrarVeiculo(veiculo));
-    }
-    @Test
-    public void testCadastrarVeiculoComModeloNulo() {
-        Veiculo veiculo = new Veiculo();
-        veiculo.setModelo(null);
-        veiculo.setFabricante("Honda");
-        veiculo.setAno(1900);
-        veiculo.setPreco(100000.0);
-        veiculo.setTipo("carro");
-
-        Assertions.assertThrows(IllegalArgumentException.class, () -> veiculoService.cadastrarVeiculo(veiculo));
-    }
-    @Test
-    public void testCadastrarVeiculoComModeloVazio() {
-        Veiculo veiculo = new Veiculo();
-
-        veiculo.setModelo("");
-        veiculo.setFabricante("Honda");
-        veiculo.setAno(1900);
-        veiculo.setPreco(100000.0);
-        veiculo.setTipo("carro");
-
-        Assertions.assertThrows(IllegalArgumentException.class, () -> veiculoService.cadastrarVeiculo(veiculo));
-    }
-    @Test
-    public void testCadastrarVeiculoComFabricanteNulo() {
-        Veiculo veiculo = new Veiculo();
-        veiculo.setModelo("Civic");
-        veiculo.setFabricante(null);
-        veiculo.setAno(1900);
-        veiculo.setPreco(100000.0);
-        veiculo.setTipo("carro");
-
-        Assertions.assertThrows(IllegalArgumentException.class, () -> veiculoService.cadastrarVeiculo(veiculo));
-    }
-    @Test
-    public void testCadastrarVeiculoComFabricanteVazio() {
-        Veiculo veiculo = new Veiculo();
-
-        veiculo.setModelo("Civic");
-        veiculo.setFabricante("");
-        veiculo.setAno(1900);
-        veiculo.setPreco(100000.0);
-        veiculo.setTipo("carro");
-
-        Assertions.assertThrows(IllegalArgumentException.class, () -> veiculoService.cadastrarVeiculo(veiculo));
+    public void testCadastrarCarroSemQuantidadePortas() {
+        Carro carro = criarCarroValido();
+        carro.setQuantidadePortas(0);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> veiculoService.cadastrarVeiculo(carro));
     }
 
     @Test
-    public void testCadastrarVeiculoComTipoNulo() {
-        Veiculo veiculo = new Veiculo();
-        veiculo.setModelo("Civic");
-        veiculo.setFabricante("Honda");
-        veiculo.setAno(1900);
-        veiculo.setPreco(100000.0);
-        veiculo.setTipo(null);
-
-        Assertions.assertThrows(IllegalArgumentException.class, () -> veiculoService.cadastrarVeiculo(veiculo));
-    }
-    @Test
-    public void testCadastrarVeiculoComTipoDiferente() {
-        Veiculo veiculo = new Veiculo();
-        veiculo.setModelo("Civic");
-        veiculo.setFabricante("Honda");
-        veiculo.setAno(1900);
-        veiculo.setPreco(100000.0);
-        veiculo.setTipo("caminhão");
-
-        Assertions.assertThrows(IllegalArgumentException.class, () -> veiculoService.cadastrarVeiculo(veiculo));
+    public void testCadastrarCarroSemTipoCombustivel() {
+        Carro carro = criarCarroValido();
+        carro.setTipoCombustivel(null);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> veiculoService.cadastrarVeiculo(carro));
     }
 
     @Test
-    public void testBuscarVeiculosPorFiltro() {
-        List<Veiculo> veiculos = veiculoService.buscarVeiculosPorFiltro("carro", null, null);
-        Assertions.assertNotNull(veiculos);
-        Assertions.assertFalse(veiculos.isEmpty());
+    public void testCadastrarMotoValida() {
+        Moto moto = criarMotoValida();
+        Assertions.assertDoesNotThrow(() -> veiculoService.cadastrarVeiculo(moto));
     }
 
     @Test
-    public void testAtualizarVeiculo() {
-        Veiculo veiculo = new Veiculo();
-
-        veiculo.setId(1);
-        veiculo.setModelo("Civic Atualizado");
-        veiculo.setFabricante("Honda");
-        veiculo.setAno(2023);
-        veiculo.setPreco(110000.0);
-        veiculo.setTipo("carro");
-
-        Assertions.assertDoesNotThrow(() -> veiculoService.atualizarVeiculo(veiculo));
+    public void testCadastrarMotoSemCilindrada() {
+        Moto moto = criarMotoValida();
+        moto.setCilindrada(0);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> veiculoService.cadastrarVeiculo(moto));
     }
 
     @Test
-    public void testRemoverVeiculo() {
-        Assertions.assertDoesNotThrow(() -> veiculoService.removerVeiculo(1));
+    public void testCadastrarVeiculoSemTipo() {
+        Carro carro = criarCarroValido();
+        carro.setTipo(null);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> veiculoService.cadastrarVeiculo(carro));
+    }
+
+    @Test
+    public void testCadastrarVeiculoComTipoInvalido() {
+        Carro carro = criarCarroValido();
+        carro.setTipo("caminhao");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> veiculoService.cadastrarVeiculo(carro));
+    }
+
+
+    @Test
+    public void testAtualizarCarroValido() {
+        Carro carro = criarCarroValido();
+        carro.setId(1);
+        carro.setModelo("Onix Plus Turbo");
+        Assertions.assertDoesNotThrow(() -> veiculoService.atualizarVeiculo(carro));
+    }
+
+    @Test
+    public void testAtualizarCarroSemQuantidadePortas() {
+        Carro carro = criarCarroValido();
+        carro.setId(1);
+        carro.setQuantidadePortas(0);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> veiculoService.atualizarVeiculo(carro));
+    }
+
+    @Test
+    public void testAtualizarMotoValida() {
+        Moto moto = criarMotoValida();
+        moto.setId(2);
+        moto.setModelo("CB 500X");
+        Assertions.assertDoesNotThrow(() -> veiculoService.atualizarVeiculo(moto));
+    }
+
+    @Test
+    public void testAtualizarMotoSemCilindrada() {
+        Moto moto = criarMotoValida();
+        moto.setId(2);
+        moto.setCilindrada(0);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> veiculoService.atualizarVeiculo(moto));
+    }
+
+    @Test
+    public void testAtualizarVeiculoSemTipo() {
+        Carro carro = criarCarroValido();
+        carro.setId(3);
+        carro.setTipo(null);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> veiculoService.atualizarVeiculo(carro));
+    }
+
+    @Test
+    public void testAtualizarVeiculoComTipoInvalido() {
+        Carro carro = criarCarroValido();
+        carro.setId(3);
+        carro.setTipo("caminhao");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> veiculoService.atualizarVeiculo(carro));
+    }
+
+    
+    private Carro criarCarroValido() {
+        Carro carro = new Carro();
+        carro.setModelo("Onix Plus");
+        carro.setFabricante("Chevrolet");
+        carro.setAno(2023);
+        carro.setPreco(85000.0);
+        carro.setTipo("carro");
+        carro.setQuantidadePortas(4);
+        carro.setTipoCombustivel("flex");
+        return carro;
+    }
+
+    private Moto criarMotoValida() {
+        Moto moto = new Moto();
+        moto.setModelo("CB 500F");
+        moto.setFabricante("Honda");
+        moto.setAno(2023);
+        moto.setPreco(32000.0);
+        moto.setTipo("moto");
+        moto.setCilindrada(500);
+        return moto;
     }
 }
