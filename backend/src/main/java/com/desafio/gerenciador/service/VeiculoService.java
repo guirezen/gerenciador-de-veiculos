@@ -5,7 +5,9 @@ import com.desafio.gerenciador.model.Carro;
 import com.desafio.gerenciador.model.Moto;
 import com.desafio.gerenciador.model.Veiculo;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class VeiculoService {
     private final VeiculoDAO veiculoDao;
@@ -36,7 +38,37 @@ public class VeiculoService {
 
 
     public List<Veiculo> listarVeiculos() {
-        return veiculoDao.consultarTodosVeiculos();
+        List<Map<String, Object>> dadosVeiculos = veiculoDao.consultarTodosVeiculos();
+        List<Veiculo> veiculos = new ArrayList<>();
+
+        for (Map<String, Object> dados : dadosVeiculos) {
+            String tipo = (String) dados.get("tipo");
+
+            if ("carro".equals(tipo)) {
+                Carro carro = new Carro();
+                carro.setId((int) dados.get("id"));
+                carro.setModelo((String) dados.get("modelo"));
+                carro.setFabricante((String) dados.get("fabricante"));
+                carro.setAno((int) dados.get("ano"));
+                carro.setPreco((double) dados.get("preco"));
+                carro.setTipo((String) dados.get("tipo"));
+                carro.setQuantidadePortas((Integer) dados.get("quantidade_portas"));
+                carro.setTipoCombustivel((String) dados.get("tipo_combustivel"));
+                veiculos.add(carro);
+            } else if ("moto".equals(tipo)) {
+                Moto moto = new Moto();
+                moto.setId((int) dados.get("id"));
+                moto.setModelo((String) dados.get("modelo"));
+                moto.setFabricante((String) dados.get("fabricante"));
+                moto.setAno((int) dados.get("ano"));
+                moto.setPreco((double) dados.get("preco"));
+                moto.setTipo((String) dados.get("tipo"));
+                moto.setCilindrada((Integer) dados.get("cilindrada"));
+                veiculos.add(moto);
+            }
+        }
+
+        return veiculos;
     }
 
     public List<Veiculo> buscarVeiculosPorFiltro(String tipo, String modelo, Integer ano) {
