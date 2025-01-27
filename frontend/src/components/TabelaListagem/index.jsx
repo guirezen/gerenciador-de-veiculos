@@ -1,10 +1,9 @@
-import { CaixaExclusao } from "../CaixaExclusao";
-import { AddOutlined, DeleteOutlined, EditOutlined } from "@mui/icons-material";
+import { DeleteOutlined, EditOutlined } from "@mui/icons-material";
 import { Pagination, styled } from "@mui/material";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 
-import { ButtonAddPubli, ContainerSection, HeadTable, PaginationButtonContainer, RowTable, TableContainer, TDButtons, THead } from "./styles";
+import { CaixaExclusao } from "../CaixaExclusao";
+import { ButtonNew, ContainerSection, HeadTable, PaginationButtonContainer, RowTable, TableContainer, TDButtons, THead } from "./styles";
 
 const CustomPagination = styled(Pagination)(() => ({
   ".MuiButtonBase-root": {
@@ -23,7 +22,7 @@ const TabelaListagem = ({
   listaConteudo,
   onDelete,
   onEdit,
-  toCreatePage,
+  handleClickOpenDialog,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [abrirCaixaExclusao, setAbrirCaixaExclusao] = useState(false);
@@ -34,9 +33,9 @@ const TabelaListagem = ({
     setIdContent(id);
   };
 
-  const publicationsPerPage = 10;
-  const startIndex = (currentPage - 1) * publicationsPerPage;
-  const endIndex = startIndex + publicationsPerPage;
+  const veiculosPorPage = 10;
+  const startIndex = (currentPage - 1) * veiculosPorPage;
+  const endIndex = startIndex + veiculosPorPage;
   const displayedContent = listaConteudo.slice(startIndex, endIndex);
 
   return (
@@ -77,21 +76,14 @@ const TabelaListagem = ({
       </TableContainer>
       <PaginationButtonContainer>
         <CustomPagination
-          count={Math.ceil(listaConteudo.length / publicationsPerPage)}
+          count={Math.ceil(listaConteudo.length / veiculosPorPage)}
           shape="rounded"
           page={currentPage}
           onChange={(event, value) => setCurrentPage(value)}
           siblingCount={1}
           boundaryCount={0}
         />
-        {toCreatePage && (
-          <Link to={toCreatePage}>
-            <ButtonAddPubli type="button">
-              <AddOutlined sx={{ fontSize: "17px", color: "#fff" }} />
-              Novo
-            </ButtonAddPubli>
-          </Link>
-        )}
+        <ButtonNew onClick={handleClickOpenDialog}>+ Novo</ButtonNew>
       </PaginationButtonContainer>
       {abrirCaixaExclusao && (
         <CaixaExclusao

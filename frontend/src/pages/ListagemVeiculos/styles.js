@@ -17,7 +17,7 @@ export const ContainerButtons = styled.div`
 
 export const ContainerTituloButtonForm = styled.div`
   display: flex;
-  position: relative;
+  /* position: relative; */
   width: 100%;
 `;
 

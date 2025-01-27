@@ -36,7 +36,7 @@ export const InputsContainer = styled.div`
     width: 100%;
     max-width: 684px;
     display: inherit;
-    justify-content: space-between; 
+    justify-content: end; 
     align-items: center;
 
     @media (max-width: 900px) {

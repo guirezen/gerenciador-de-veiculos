@@ -1,22 +1,23 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import DialogNewForm from "../../components/DialogNewForm";
 import ListagemConteudo from "../../components/ListagemConteudo";
 import TituloBuscadorListagem from "../../components/TituloBuscadorListagem";
-import { deleteVeiculo, getVeiculos } from "../../services/veiculosService";
+import { deleteVeiculo, getVeiculoByFiltro, getVeiculos } from "../../services/veiculosService";
 import FormVeiculo from "../FormVeiculo";
 import { ButtonNew, ContainerTituloButtonForm, MainContainer } from "./styles";
 
 const ListagemVeiculos = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [veiculoSelected, setVeiculoSelected] = useState();
+  const [filters, setFilters] = useState("");
 
   const queryClient = useQueryClient();
 
   const { data, isFetching, isError, error } = useQuery({
-    queryKey: (["veiculos"]),
-    queryFn: getVeiculos,
+    queryKey: ["veiculos", filters],
+    queryFn: () => (filters ? getVeiculoByFiltro(filters) : getVeiculos()),
   });
 
   const deleteVeiculoMutation = useMutation({
@@ -36,7 +37,7 @@ const ListagemVeiculos = () => {
     { label: "Preço", accessor: "preco" },
   ];
 
-  const handleClick = () => {
+  const handleClickOpenDialog = () => {
     setOpenDialog(!openDialog);
   };
 
@@ -54,23 +55,32 @@ const ListagemVeiculos = () => {
 
   const openEditVeiculo = (veiculo) => {
     setVeiculoSelected(veiculo);
-    handleClick();
+    handleClickOpenDialog();
   };
+
+  useEffect(() => {
+    setVeiculoSelected("");
+  }, [openDialog]);
 
   return (
     <MainContainer>
       <ContainerTituloButtonForm>
-        <TituloBuscadorListagem titulo={"Veículos"} />
-        <ButtonNew onClick={handleClick}>+ Novo</ButtonNew>
+        <TituloBuscadorListagem
+          titulo={"Veículos"}
+          setFilters={setFilters}
+        />
       </ContainerTituloButtonForm>
 
       <DialogNewForm
         titulo={"Novo Veículo"}
-        handleClick={handleClick}
+        handleClick={handleClickOpenDialog}
         open={openDialog}
         maxWidth={"sm"}
       >
-        <FormVeiculo handleClick={handleClick} veiculoSelected={veiculoSelected} />
+        <FormVeiculo
+          handleClick={handleClickOpenDialog}
+          veiculoSelected={veiculoSelected}
+        />
       </DialogNewForm>
 
       <ListagemConteudo
@@ -85,6 +95,7 @@ const ListagemVeiculos = () => {
         columnsTabela={columns}
         onDelete={onDelete}
         handleEdit={openEditVeiculo}
+        handleClickOpenDialog={handleClickOpenDialog}
       />
     </MainContainer>
   );

@@ -84,10 +84,6 @@ export const TDButtons = styled.td`
     height: 40px;
   }
 
-  /* button:nth-child(1) {
-    margin-right: 15px;
-  } */
-
   .MuiSvgIcon-root {
     color: #c3c3c3;
   }
@@ -117,27 +113,25 @@ export const PaginationButtonContainer = styled.div`
   }
 `;
 
-export const ButtonAddPubli = styled.button`
-  background-color: #278ef5;
-  border-radius: 10px;
-  width: 208px;
-  height: 67px;
-  border: none;
+export const ButtonNew = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background-color: #278ef5;
+  border-radius: 10px;
+  border: none;
   color: #fff;
+  width: 90px;
+  height: 40px;
+  font-size: 16px;
+  font-weight: 400;
+  transition: transform 0.1s ease, background-color 0.1s ease;
 
   &:active {
-    width: 190px;
-    height: 60px;
-    right: 10px;
-    transition: transform 0.3s ease;
-  }
-
-  @media (max-width: 650px) {
-    border-radius: 10px;
-    width: 68px;
-    height: 47px;
+    transform: scale(1.1);
+    background-color: #1d6cc2;
   }
 `;

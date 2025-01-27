@@ -40,3 +40,15 @@ export const putVeiculo = async (data) => {
     handlerApiError(error, "putVeiculo");
   }
 };
+
+export const getVeiculoByFiltro = async (searchTerm) => {
+  console.log("termo de busca: ", searchTerm);
+  try {
+    const response = await Api.get("/filtro", {
+      params: { searchTerm },
+    });
+    return response.data;
+  } catch (error) {
+    handlerApiError(error, "getVeiculoByFiltro");
+  }
+};

@@ -59,7 +59,11 @@ const FormVeiculo = ({
 
   useEffect(() => {
     if (veiculoSelected) {
-      setTypeSelected(veiculoSelected.tipo);
+
+      if (veiculoSelected.tipo !== typeSelected) {
+        setTypeSelected(veiculoSelected.tipo);
+      }
+
       reset({
         modelo: veiculoSelected.modelo,
         fabricante: veiculoSelected.fabricante,
@@ -71,7 +75,7 @@ const FormVeiculo = ({
         cilindrada: veiculoSelected.cilindrada,
       });
     }
-  }, [veiculoSelected, typeSelected]);
+  }, [veiculoSelected]);
 
   return (
     <>
