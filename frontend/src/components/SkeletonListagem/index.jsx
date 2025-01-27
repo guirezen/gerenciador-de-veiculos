@@ -1,13 +1,13 @@
 import { Grid, Skeleton } from "@mui/material";
 
-const SkeletonListagem = ({ listSkeleton, heightSkeleton, spacingSkeleton }) => {
+const SkeletonListagem = ({ listSkeleton }) => {
     
   return (
-    <Grid container spacing={spacingSkeleton}>
+    <Grid container spacing={8}>
       <Grid item xs>
         {listSkeleton.map((_, index) => (
           <div key={index}>
-            <Skeleton sx={{ height: heightSkeleton }} />
+            <Skeleton sx={{ height: "60px" }} />
           </div>
         ))}
       </Grid>

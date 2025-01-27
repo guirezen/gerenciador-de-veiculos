@@ -6,7 +6,7 @@ import ListagemConteudo from "../../components/ListagemConteudo";
 import TituloBuscadorListagem from "../../components/TituloBuscadorListagem";
 import { deleteVeiculo, getVeiculoByFiltro, getVeiculos } from "../../services/veiculosService";
 import FormVeiculo from "../FormVeiculo";
-import { ButtonNew, ContainerTituloButtonForm, MainContainer } from "./styles";
+import { ContainerTitulo, MainContainer } from "./styles";
 
 const ListagemVeiculos = () => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -64,18 +64,14 @@ const ListagemVeiculos = () => {
 
   return (
     <MainContainer>
-      <ContainerTituloButtonForm>
-        <TituloBuscadorListagem
-          titulo={"Veículos"}
-          setFilters={setFilters}
-        />
-      </ContainerTituloButtonForm>
+      <ContainerTitulo>
+        <TituloBuscadorListagem titulo={"Veículos"} setFilters={setFilters} />
+      </ContainerTitulo>
 
       <DialogNewForm
         titulo={"Novo Veículo"}
         handleClick={handleClickOpenDialog}
         open={openDialog}
-        maxWidth={"sm"}
       >
         <FormVeiculo
           handleClick={handleClickOpenDialog}
@@ -86,9 +82,6 @@ const ListagemVeiculos = () => {
       <ListagemConteudo
         listaConteudo={data}
         isFetching={isFetching}
-        heightSkeleton={"60px"}
-        spacingSkeleton={8}
-        numberSkeleton={8}
         isError={isError}
         textoAlerta={"Ocorreu um erro ao carregar os veículos:"}
         errorMessage={error?.message}

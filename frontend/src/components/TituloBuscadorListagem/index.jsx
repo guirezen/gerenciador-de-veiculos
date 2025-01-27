@@ -3,11 +3,6 @@ import { styled } from "@mui/material";
 
 import { ButtonSearch, ConteinerTitleInput, InputsContainer, SearchConteiner, TitleIconContainer } from "./styles";
 
-const SearchIconCustom = styled(SearchOutlined)(() => ({
-  fontSize: "30px",
-  color: "#BBBBBB",
-}));
-
 const TituloBuscadorListagem = ({ titulo, setFilters }) => {
   return (
     <ConteinerTitleInput>
@@ -21,9 +16,6 @@ const TituloBuscadorListagem = ({ titulo, setFilters }) => {
             placeholder="Digite o modelo, fabricante, tipo ou o ano do veículo..."
             onChange={(event) => setFilters(event.target.value)}
           />
-          {/* <ButtonSearch type="button">
-            <Close />
-          </ButtonSearch> */}
         </SearchConteiner>
       </InputsContainer>
     </ConteinerTitleInput>

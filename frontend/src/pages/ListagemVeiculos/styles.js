@@ -15,7 +15,7 @@ export const ContainerButtons = styled.div`
   padding-top: 10px;
 `;
 
-export const ContainerTituloButtonForm = styled.div`
+export const ContainerTitulo = styled.div`
   display: flex;
   /* position: relative; */
   width: 100%;

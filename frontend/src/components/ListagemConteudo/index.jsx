@@ -7,9 +7,6 @@ const ListagemConteudo = ({
   isFetching,
   isError,
   errorMessage,
-  heightSkeleton,
-  spacingSkeleton,
-  numberSkeleton,
   textoAlerta,
   listaConteudo,
   columnsTabela,
@@ -17,14 +14,12 @@ const ListagemConteudo = ({
   handleEdit,
   handleClickOpenDialog
 }) => {
-  const listSkeleton = Array.from({ length: numberSkeleton });
+  const listSkeleton = [1, 2, 3];
 
   return (
     <div>
       {isFetching ? (
         <SkeletonListagem
-          heightSkeleton={heightSkeleton}
-          spacingSkeleton={spacingSkeleton}
           listSkeleton={listSkeleton}
         />
       ) : isError ? (

@@ -5,7 +5,6 @@ export const DialogNewForm = ({
   open,
   handleClick,
   children,
-  maxWidth,
 }) => {
   return (
     <Dialog
@@ -14,7 +13,7 @@ export const DialogNewForm = ({
         handleClick();
       }}
       fullWidth
-      maxWidth={maxWidth ? maxWidth : "md"}
+      maxWidth={"sm"}
     >
       <DialogTitle>{titulo}</DialogTitle>
       <DialogContent>{children}</DialogContent>

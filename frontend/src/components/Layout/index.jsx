@@ -5,7 +5,7 @@ import Header from "../Header";
 import NavLateral from "../NavLateral";
 import { Conteiner } from "./styles";
 
-export default function Layout({ children }) {
+export default function Layout() {
   const [mobileOpen, setMobileOpen] = useState(true);
   const [isClosing, setIsClosing] = useState(false);
 
