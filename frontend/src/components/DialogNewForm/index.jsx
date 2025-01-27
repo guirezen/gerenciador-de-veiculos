@@ -5,12 +5,14 @@ export const DialogNewForm = ({
   open,
   handleClick,
   children,
+  setVeiculoSelected
 }) => {
   return (
     <Dialog
       open={open}
       onClose={() => {
         handleClick();
+        setVeiculoSelected("");
       }}
       fullWidth
       maxWidth={"sm"}

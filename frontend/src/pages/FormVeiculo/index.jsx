@@ -6,27 +6,14 @@ import { Controller, useForm } from "react-hook-form";
 import { postVeiculo, putVeiculo } from "../../services/veiculosService";
 import { ContainerButtons, ContainerForm } from "./styles";
 
-const FormVeiculo = ({
-  handleClick,
-  veiculoSelected = {
-    defaultValues: {
-      modelo: "",
-      fabricante: "",
-      ano: 2000,
-      preco: 0,
-      tipo: "",
-      quantidadePortas: 1,
-      tipoCombustivel: "",
-      cilindrada: 0,
-    },
-  },
-}) => {
+const FormVeiculo = ({ handleClick, veiculoSelected, setVeiculoSelected }) => {
   const [typeSelected, setTypeSelected] = useState("");
   const { control, handleSubmit, reset } = useForm();
 
   const queryClient = useQueryClient();
 
   const onSubmit = (data) => {
+    console.log("passa aqui: ", veiculoSelected);
     if (veiculoSelected.id) {
       const newData = { ...data, id: veiculoSelected.id };
       putVeiculoMutation.mutate(newData);
@@ -42,6 +29,7 @@ const FormVeiculo = ({
 
       queryClient.invalidateQueries(["veiculos"]);
       queryClient.fetchQuery(["veiculos"]);
+      handleClick();
     },
     onError: (error) => console.error("Erro ao cadastrar o veículo", error),
   });
@@ -53,13 +41,13 @@ const FormVeiculo = ({
 
       queryClient.invalidateQueries(["veículos"]);
       queryClient.fetchQuery(["veículos"]);
+      handleClick();
     },
     onError: (error) => console.error("Erro ao editar o veículo: ", error),
   });
 
   useEffect(() => {
     if (veiculoSelected) {
-
       if (veiculoSelected.tipo !== typeSelected) {
         setTypeSelected(veiculoSelected.tipo);
       }
@@ -262,7 +250,14 @@ const FormVeiculo = ({
         ) : null}
       </ContainerForm>
       <ContainerButtons>
-        <Button onClick={handleClick}>Cancelar</Button>
+        <Button
+          onClick={() => {
+            handleClick();
+            setVeiculoSelected("")
+          }}
+        >
+          Cancelar
+        </Button>
         <Button form={"form-veiculo"} type="submit">
           Enviar
         </Button>

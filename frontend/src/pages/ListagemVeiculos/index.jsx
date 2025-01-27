@@ -58,10 +58,6 @@ const ListagemVeiculos = () => {
     handleClickOpenDialog();
   };
 
-  useEffect(() => {
-    setVeiculoSelected("");
-  }, [openDialog]);
-
   return (
     <MainContainer>
       <ContainerTitulo>
@@ -72,10 +68,12 @@ const ListagemVeiculos = () => {
         titulo={"Novo Veículo"}
         handleClick={handleClickOpenDialog}
         open={openDialog}
+        setVeiculoSelected={setVeiculoSelected}
       >
         <FormVeiculo
           handleClick={handleClickOpenDialog}
           veiculoSelected={veiculoSelected}
+          setVeiculoSelected={setVeiculoSelected}
         />
       </DialogNewForm>
 
