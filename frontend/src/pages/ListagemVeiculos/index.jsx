@@ -52,6 +52,11 @@ const ListagemVeiculos = () => {
       "Ao excluir o veículo, todas as informações relacionadas ou vinculadas serão excluídas. Caso queira apagar, basta selecionar a opção excluir.",
   };
 
+  const openEditVeiculo = (veiculo) => {
+    setVeiculoSelected(veiculo);
+    handleClick();
+  };
+
   return (
     <MainContainer>
       <ContainerTituloButtonForm>
@@ -79,7 +84,7 @@ const ListagemVeiculos = () => {
         errorMessage={error?.message}
         columnsTabela={columns}
         onDelete={onDelete}
-        // handleEdit={openEditVeiculo}
+        handleEdit={openEditVeiculo}
       />
     </MainContainer>
   );

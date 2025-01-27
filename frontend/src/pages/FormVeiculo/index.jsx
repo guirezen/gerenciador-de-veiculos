@@ -1,9 +1,9 @@
 import { Button, MenuItem, TextField } from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
-import { postVeiculo } from "../../services/veiculosService";
+import { postVeiculo, putVeiculo } from "../../services/veiculosService";
 import { ContainerButtons, ContainerForm } from "./styles";
 
 const FormVeiculo = ({
@@ -18,7 +18,7 @@ const FormVeiculo = ({
       quantidadePortas: 1,
       tipoCombustivel: "",
       cilindrada: 0,
-    }
+    },
   },
 }) => {
   const [typeSelected, setTypeSelected] = useState("");
@@ -29,7 +29,7 @@ const FormVeiculo = ({
   const onSubmit = (data) => {
     if (veiculoSelected.id) {
       const newData = { ...data, id: veiculoSelected.id };
-      //   putVeiculoMutation.mutate(newData);
+      putVeiculoMutation.mutate(newData);
     } else {
       postVeiculoMutation.mutate(data);
     }
@@ -45,6 +45,33 @@ const FormVeiculo = ({
     },
     onError: (error) => console.error("Erro ao cadastrar o veículo", error),
   });
+
+  const putVeiculoMutation = useMutation({
+    mutationFn: (data) => putVeiculo(data),
+    onSuccess: (response) => {
+      console.log("Veículo atualizado com sucesso!");
+
+      queryClient.invalidateQueries(["veículos"]);
+      queryClient.fetchQuery(["veículos"]);
+    },
+    onError: (error) => console.error("Erro ao editar o veículo: ", error),
+  });
+
+  useEffect(() => {
+    if (veiculoSelected) {
+      setTypeSelected(veiculoSelected.tipo);
+      reset({
+        modelo: veiculoSelected.modelo,
+        fabricante: veiculoSelected.fabricante,
+        ano: veiculoSelected.ano,
+        preco: veiculoSelected.preco,
+        tipo: veiculoSelected.tipo,
+        quantidadePortas: veiculoSelected.quantidadePortas,
+        tipoCombustivel: veiculoSelected.tipoCombustivel,
+        cilindrada: veiculoSelected.cilindrada,
+      });
+    }
+  }, [veiculoSelected, typeSelected]);
 
   return (
     <>

@@ -30,3 +30,13 @@ export const postVeiculo = async (data) => {
     handlerApiError(error, "postVeiculo");
   }
 };
+
+export const putVeiculo = async (data) => {
+  try {
+    const response = await Api.put(`/${data.id}`, data);
+
+    return response.data;
+  } catch (error) {
+    handlerApiError(error, "putVeiculo");
+  }
+};
