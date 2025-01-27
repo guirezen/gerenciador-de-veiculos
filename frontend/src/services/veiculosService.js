@@ -20,3 +20,13 @@ export const deleteVeiculo = async (id) => {
     handlerApiError(error, "deleteVeiculo");
   }
 };
+
+export const postVeiculo = async (data) => {
+  try {
+    const response = await Api.post("", data);
+
+    return response.data;
+  } catch (error) {
+    handlerApiError(error, "postVeiculo");
+  }
+};

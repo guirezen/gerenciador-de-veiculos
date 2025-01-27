@@ -5,15 +5,17 @@ import DialogNewForm from "../../components/DialogNewForm";
 import ListagemConteudo from "../../components/ListagemConteudo";
 import TituloBuscadorListagem from "../../components/TituloBuscadorListagem";
 import { deleteVeiculo, getVeiculos } from "../../services/veiculosService";
+import FormVeiculo from "../FormVeiculo";
 import { ButtonNew, ContainerTituloButtonForm, MainContainer } from "./styles";
 
 const ListagemVeiculos = () => {
   const [openDialog, setOpenDialog] = useState(false);
+  const [veiculoSelected, setVeiculoSelected] = useState();
 
   const queryClient = useQueryClient();
 
   const { data, isFetching, isError, error } = useQuery({
-    queryKey: ["veiculos"],
+    queryKey: (["veiculos"]),
     queryFn: getVeiculos,
   });
 
@@ -36,11 +38,6 @@ const ListagemVeiculos = () => {
 
   const handleClick = () => {
     setOpenDialog(!openDialog);
-
-    if (openDialog === true) {
-      //   setDocSelected("");
-      //   setFileSelected("");
-    }
   };
 
   const handleDeleteVeiculo = (id) => {
@@ -68,7 +65,7 @@ const ListagemVeiculos = () => {
         open={openDialog}
         maxWidth={"sm"}
       >
-        {/* <NovoDocumento handleClick={handleClick} docSelected={docSelected} /> */}
+        <FormVeiculo handleClick={handleClick} veiculoSelected={veiculoSelected} />
       </DialogNewForm>
 
       <ListagemConteudo
@@ -82,7 +79,7 @@ const ListagemVeiculos = () => {
         errorMessage={error?.message}
         columnsTabela={columns}
         onDelete={onDelete}
-        // handleEdit={openEditDocumento}
+        // handleEdit={openEditVeiculo}
       />
     </MainContainer>
   );
