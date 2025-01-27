@@ -71,22 +71,12 @@ public class VeiculoService {
         return veiculos;
     }
 
-    public List<Veiculo> buscarVeiculosPorFiltro(String tipo, String modelo, Integer ano) {
-        if (tipo != null && !tipo.isEmpty() && !tipo.equals("carro") && !tipo.equals("moto")) {
-            throw new IllegalArgumentException("Tipo inválido: deve ser 'carro', 'moto', ou vazio");
-        }
-        if (modelo != null && modelo.isEmpty()) {
-            throw new IllegalArgumentException("Modelo inválido: não pode ser vazio.");
-        }
-        if (ano != null && ano <= 1886) {
-            throw new IllegalArgumentException("Ano inválido: Deve ser 1886 ou posterior");
+    public List<Veiculo> buscarVeiculosPorFiltro(String searchTerm) {
+        if (searchTerm == null || searchTerm.isBlank()) {
+            return listarVeiculos();
         }
 
-        return veiculoDao.consultarVeiculosPorFiltro(
-                tipo != null ? tipo : "",
-                modelo != null ? modelo : "",
-                ano
-        );
+        return veiculoDao.consultarVeiculosPorFiltro(searchTerm);
     }
 
     public void atualizarVeiculo(Veiculo veiculo) {

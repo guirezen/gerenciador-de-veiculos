@@ -79,30 +79,27 @@ public class VeiculoDAO {
         return veiculos;
     }
 
-    public List<Veiculo> consultarVeiculosPorFiltro(String tipo, String modelo, Integer ano) {
-        StringBuilder sql = new StringBuilder("SELECT * FROM veiculos WHERE 1=1");
-        List<Object> parametros = new ArrayList<>();
+    public List<Veiculo> consultarVeiculosPorFiltro(String searchTerm) {
+        String sql = """
+                    SELECT
+                        v.id, v.modelo, v.fabricante, v.ano, v.preco, v.tipo
+                    FROM veiculos v
+                    WHERE v.tipo ILIKE ?
+                       OR v.modelo ILIKE ?
+                       OR v.fabricante ILIKE ?
+                       OR CAST(v.ano AS TEXT) ILIKE ?
+                """;
         List<Veiculo> veiculos = new ArrayList<>();
 
-        if (tipo != null && !tipo.isEmpty()) {
-            sql.append(" AND tipo = ?");
-            parametros.add(tipo);
-        }
-        if (modelo != null && !modelo.isEmpty()) {
-            sql.append(" AND modelo ILIKE ?");
-            parametros.add("%" + modelo + "%");
-        }
-        if (ano != null) {
-            sql.append(" AND ano = ?");
-            parametros.add(ano);
-        }
-
         try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql.toString())) {
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
 
-            for (int i = 0; i < parametros.size(); i++) {
-                stmt.setObject(i + 1, parametros.get(i));
-            }
+            String like = "%" + searchTerm + "%";
+
+            stmt.setString(1, like);
+            stmt.setString(2, like);
+            stmt.setString(3, like);
+            stmt.setString(4, like);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {

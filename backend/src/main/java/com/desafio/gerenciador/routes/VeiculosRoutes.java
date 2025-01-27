@@ -48,11 +48,10 @@ public class VeiculosRoutes {
         });
 
         get("/veiculos/filtro", (req, res) -> {
-            String tipo = req.queryParams("tipo");
-            String modelo = req.queryParams("modelo");
-            Integer ano = req.queryParams("ano") != null ? Integer.parseInt(req.queryParams("ano")) : null;
+            String searchTerm = req.queryParams("searchTerm");
             res.type("application/json");
-            return gson.toJson(veiculoService.buscarVeiculosPorFiltro(tipo, modelo, ano));
+
+            return gson.toJson(veiculoService.buscarVeiculosPorFiltro(searchTerm));
         });
     }
 }
