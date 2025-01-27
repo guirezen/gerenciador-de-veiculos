@@ -1,14 +1,19 @@
 import { useState } from 'react'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+
+import Layout from './components/Layout'
+import ListagemVeiculos from './pages/ListagemVeiculos/index';
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <>
-      <div>
-        Testando tudo
-      </div>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Layout />}>
+          <Route path='veiculos' element={<ListagemVeiculos />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
