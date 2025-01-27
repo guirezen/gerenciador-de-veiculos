@@ -1,0 +1,109 @@
+import { CaixaExclusao } from "../CaixaExclusao";
+import { AddOutlined, DeleteOutlined, EditOutlined } from "@mui/icons-material";
+import { Pagination, styled } from "@mui/material";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+
+import { ButtonAddPubli, ContainerSection, HeadTable, PaginationButtonContainer, RowTable, TableContainer, TDButtons, THead } from "./styles";
+
+const CustomPagination = styled(Pagination)(() => ({
+  ".MuiButtonBase-root": {
+    color: "#A0A0A0",
+    fontSize: "19px",
+    fontWeight: "bold",
+  },
+  ".Mui-selected": {
+    backgroundColor: "#A0A0A0!important",
+    color: "#fff",
+  },
+}));
+
+const TabelaListagem = ({
+  columns,
+  listaConteudo,
+  onDelete,
+  onEdit,
+  toCreatePage,
+}) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [abrirCaixaExclusao, setAbrirCaixaExclusao] = useState(false);
+  const [idContent, setIdContent] = useState();
+
+  const toggleCaixaExclusao = (id) => {
+    setAbrirCaixaExclusao(!abrirCaixaExclusao);
+    setIdContent(id);
+  };
+
+  const publicationsPerPage = 10;
+  const startIndex = (currentPage - 1) * publicationsPerPage;
+  const endIndex = startIndex + publicationsPerPage;
+  const displayedContent = listaConteudo.slice(startIndex, endIndex);
+
+  return (
+    <ContainerSection>
+      <TableContainer>
+        <HeadTable>
+          <tr>
+            {columns.map((column) => (
+              <THead key={column.label}>{column.label}</THead>
+            ))}
+            <THead></THead>
+          </tr>
+        </HeadTable>
+        <tbody>
+          {displayedContent?.map((content) => (
+            <RowTable key={content.id}>
+              {columns.map((column) => (
+                <td key={column.accessor}>
+                  {column.render
+                    ? column.render(content[column.accessor])
+                    : content[column.accessor]}
+                </td>
+              ))}
+              <TDButtons>
+                <button type="button" onClick={() => onEdit(content)}>
+                  <EditOutlined />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => toggleCaixaExclusao(content.id)}
+                >
+                  <DeleteOutlined />
+                </button>
+              </TDButtons>
+            </RowTable>
+          ))}
+        </tbody>
+      </TableContainer>
+      <PaginationButtonContainer>
+        <CustomPagination
+          count={Math.ceil(listaConteudo.length / publicationsPerPage)}
+          shape="rounded"
+          page={currentPage}
+          onChange={(event, value) => setCurrentPage(value)}
+          siblingCount={1}
+          boundaryCount={0}
+        />
+        {toCreatePage && (
+          <Link to={toCreatePage}>
+            <ButtonAddPubli type="button">
+              <AddOutlined sx={{ fontSize: "17px", color: "#fff" }} />
+              Novo
+            </ButtonAddPubli>
+          </Link>
+        )}
+      </PaginationButtonContainer>
+      {abrirCaixaExclusao && (
+        <CaixaExclusao
+          titulo={onDelete.titulo}
+          corpo={onDelete.descricao}
+          funcaoCancelar={toggleCaixaExclusao}
+          funcaoExcluir={() => onDelete.handleDelete(idContent)}
+          isPending={onDelete.isPending}
+        />
+      )}
+    </ContainerSection>
+  );
+};
+
+export default TabelaListagem;

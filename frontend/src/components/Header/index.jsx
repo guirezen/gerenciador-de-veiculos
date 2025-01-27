@@ -16,7 +16,7 @@ export default function Header({ handleDrawerToggle }) {
                 <MenuCustom  
                     onClick={handleDrawerToggle}
                 />
-                <h1>Administrativo Edifs</h1>
+                <h1>Gerenciador de Veículos</h1>
             </ButtonTitleConteiner>
         </HeaderConteiner>
     )
