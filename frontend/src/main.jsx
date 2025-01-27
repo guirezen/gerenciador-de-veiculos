@@ -1,12 +1,17 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
 
-import App from './App.jsx'
-import { GlobalStyles } from './styles/global.js'
+import App from "./App.jsx";
+import { GlobalStyles } from "./styles/global.js";
 
-createRoot(document.getElementById('root')).render(
+const queryClient = new QueryClient();
+
+createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <GlobalStyles />
-    <App />
-  </StrictMode>,
-)
+    <QueryClientProvider client={queryClient}>
+      <GlobalStyles />
+      <App />
+    </QueryClientProvider>
+  </StrictMode>
+);

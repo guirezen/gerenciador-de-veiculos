@@ -1,12 +1,27 @@
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
 import DialogNewForm from "../../components/DialogNewForm";
 import ListagemConteudo from "../../components/ListagemConteudo";
 import TituloBuscadorListagem from "../../components/TituloBuscadorListagem";
+import { getVeiculos } from "../../services/veiculosService";
 import { ButtonNew, ContainerTituloButtonForm, MainContainer } from "./styles";
 
 const ListagemVeiculos = () => {
   const [openDialog, setOpenDialog] = useState(false);
+
+  const queryClient = useQueryClient();
+
+  const { data, isFetching, isError, error } = useQuery({
+    queryKey: ["veiculos"],
+    queryFn: getVeiculos,
+  });
+
+  const columns = [
+    { label: "Modelo", accessor: "modelo" },
+    { label: "Ano", accessor: "ano" },
+    { label: "Preço", accessor: "preco" },
+  ];
 
   const handleClick = () => {
     setOpenDialog(!openDialog);
@@ -33,7 +48,7 @@ const ListagemVeiculos = () => {
         {/* <NovoDocumento handleClick={handleClick} docSelected={docSelected} /> */}
       </DialogNewForm>
 
-      {/* <ListagemConteudo
+      <ListagemConteudo
         listaConteudo={data}
         isFetching={isFetching}
         heightSkeleton={"60px"}
@@ -43,9 +58,9 @@ const ListagemVeiculos = () => {
         textoAlerta={"Ocorreu um erro ao carregar os veículos:"}
         errorMessage={error?.message}
         columnsTabela={columns}
-        onDelete={onDelete}
-        handleEdit={openEditDocumento}
-      /> */}
+        // onDelete={onDelete}
+        // handleEdit={openEditDocumento}
+      />
     </MainContainer>
   );
 };
