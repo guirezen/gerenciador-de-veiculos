@@ -1,10 +1,10 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
 import DialogNewForm from "../../components/DialogNewForm";
 import ListagemConteudo from "../../components/ListagemConteudo";
 import TituloBuscadorListagem from "../../components/TituloBuscadorListagem";
-import { getVeiculos } from "../../services/veiculosService";
+import { deleteVeiculo, getVeiculos } from "../../services/veiculosService";
 import { ButtonNew, ContainerTituloButtonForm, MainContainer } from "./styles";
 
 const ListagemVeiculos = () => {
@@ -17,6 +17,17 @@ const ListagemVeiculos = () => {
     queryFn: getVeiculos,
   });
 
+  const deleteVeiculoMutation = useMutation({
+    mutationFn: (id) => deleteVeiculo(id),
+    onSuccess: () => {
+      console.log("Veículo deleteado com sucesso!");
+      queryClient.invalidateQueries(["veiculos"]);
+    },
+    onError: (error) => {
+      console.error("Erro ao deletar veículo: ", error);
+    },
+  });
+
   const columns = [
     { label: "Modelo", accessor: "modelo" },
     { label: "Ano", accessor: "ano" },
@@ -27,9 +38,21 @@ const ListagemVeiculos = () => {
     setOpenDialog(!openDialog);
 
     if (openDialog === true) {
-    //   setDocSelected("");
-    //   setFileSelected("");
+      //   setDocSelected("");
+      //   setFileSelected("");
     }
+  };
+
+  const handleDeleteVeiculo = (id) => {
+    deleteVeiculoMutation.mutate(id);
+  };
+
+  const onDelete = {
+    handleDelete: handleDeleteVeiculo,
+    isPending: deleteVeiculoMutation.isPending,
+    titulo: "Deseja Excluir o Veiculo?",
+    descricao:
+      "Ao excluir o veículo, todas as informações relacionadas ou vinculadas serão excluídas. Caso queira apagar, basta selecionar a opção excluir.",
   };
 
   return (
@@ -38,7 +61,7 @@ const ListagemVeiculos = () => {
         <TituloBuscadorListagem titulo={"Veículos"} />
         <ButtonNew onClick={handleClick}>+ Novo</ButtonNew>
       </ContainerTituloButtonForm>
-      
+
       <DialogNewForm
         titulo={"Novo Veículo"}
         handleClick={handleClick}
@@ -58,7 +81,7 @@ const ListagemVeiculos = () => {
         textoAlerta={"Ocorreu um erro ao carregar os veículos:"}
         errorMessage={error?.message}
         columnsTabela={columns}
-        // onDelete={onDelete}
+        onDelete={onDelete}
         // handleEdit={openEditDocumento}
       />
     </MainContainer>
