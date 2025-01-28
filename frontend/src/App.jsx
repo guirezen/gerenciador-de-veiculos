@@ -9,8 +9,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Layout />}>
-          <Route path='veiculos' element={<ListagemVeiculos />} />
+        <Route element={<Layout />}>
+          <Route path={'/'} element={<ListagemVeiculos />} />
         </Route>
       </Routes>
     </BrowserRouter>
