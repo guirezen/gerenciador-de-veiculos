@@ -1,3 +1,4 @@
+import { validarCombustível } from "../../utils/validations";
 import { Button, MenuItem, TextField } from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -6,14 +7,18 @@ import { Controller, useForm } from "react-hook-form";
 import { postVeiculo, putVeiculo } from "../../services/veiculosService";
 import { ContainerButtons, ContainerForm } from "./styles";
 
-const FormVeiculo = ({ handleClickOpen, veiculoSelected, setVeiculoSelected }) => {
+const FormVeiculo = ({
+  handleClickOpen,
+  veiculoSelected,
+  setVeiculoSelected,
+}) => {
   const [typeSelected, setTypeSelected] = useState("");
   const { control, handleSubmit, reset } = useForm();
 
   const queryClient = useQueryClient();
 
   const onSubmit = (data) => {
-    ("passa aqui: ", veiculoSelected);
+    "passa aqui: ", veiculoSelected;
     if (veiculoSelected?.id) {
       const newData = { ...data, id: veiculoSelected.id };
       putVeiculoMutation.mutate(newData);
@@ -73,7 +78,7 @@ const FormVeiculo = ({ handleClickOpen, veiculoSelected, setVeiculoSelected }) =
           name="modelo"
           control={control}
           defaultValue=""
-          rules={{ required: "O modelo é obrigatório",  }}
+          rules={{ required: "O modelo é obrigatório" }}
           render={({ field, fieldState: { error } }) => (
             <TextField
               id="outlined-basic"
@@ -129,7 +134,11 @@ const FormVeiculo = ({ handleClickOpen, veiculoSelected, setVeiculoSelected }) =
           name="preco"
           control={control}
           defaultValue={0}
-          rules={{ required: "O preço é obrigatório" }}
+          rules={{
+            required: "O preço é obrigatório",
+            validate: (value) =>
+              value > 0 || "O preço deve ser maior ou igual a 0",
+          }}
           render={({ field, fieldState: { error } }) => (
             <TextField
               id="outlined-basic"
@@ -147,6 +156,7 @@ const FormVeiculo = ({ handleClickOpen, veiculoSelected, setVeiculoSelected }) =
           name="tipo"
           control={control}
           defaultValue=""
+          rules={{ required: "O tipo é obrigatório" }}
           render={({ field, fieldState: { error } }) => (
             <TextField
               id="outlined-basic"
@@ -210,6 +220,7 @@ const FormVeiculo = ({ handleClickOpen, veiculoSelected, setVeiculoSelected }) =
                   typeSelected === "carro"
                     ? "O tipo de combustivel é obrigatório"
                     : false,
+                validate: (value) => validarCombustível(value, typeSelected),
               }}
               render={({ field, fieldState: { error } }) => (
                 <TextField
@@ -254,7 +265,7 @@ const FormVeiculo = ({ handleClickOpen, veiculoSelected, setVeiculoSelected }) =
         <Button
           onClick={() => {
             handleClickOpen();
-            setVeiculoSelected("")
+            setVeiculoSelected("");
           }}
         >
           Cancelar
