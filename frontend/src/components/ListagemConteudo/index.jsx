@@ -11,8 +11,9 @@ const ListagemConteudo = ({
   listaConteudo,
   columnsTabela,
   onDelete,
-  handleEdit,
-  handleClickOpenDialog
+  onEdit,
+  onDetails,
+  handleClickOpenEdit
 }) => {
   const listSkeleton = [1, 2, 3];
 
@@ -31,8 +32,9 @@ const ListagemConteudo = ({
             listaConteudo={listaConteudo}       
             columns={columnsTabela}
             onDelete={onDelete}   
-            onEdit={handleEdit}
-            handleClickOpenDialog={handleClickOpenDialog}
+            onEdit={onEdit}
+            onDetails={onDetails}
+            handleClickOpenEdit={handleClickOpenEdit}
         />
       )}
     </div>

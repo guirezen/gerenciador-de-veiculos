@@ -1,8 +1,9 @@
-import { DeleteOutlined, EditOutlined } from "@mui/icons-material";
+import { DeleteOutlined, DetailsOutlined, EditOutlined, MoreOutlined } from "@mui/icons-material";
 import { Pagination, styled } from "@mui/material";
 import { useState } from "react";
 
 import { CaixaExclusao } from "../CaixaExclusao";
+import DialogGeneric from "../DialogGeneric";
 import { ButtonNew, ContainerSection, HeadTable, PaginationButtonContainer, RowTable, TableContainer, TDButtons, THead } from "./styles";
 
 const CustomPagination = styled(Pagination)(() => ({
@@ -22,7 +23,8 @@ const TabelaListagem = ({
   listaConteudo,
   onDelete,
   onEdit,
-  handleClickOpenDialog,
+  onDetails,
+  handleClickOpenEdit,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [abrirCaixaExclusao, setAbrirCaixaExclusao] = useState(false);
@@ -53,7 +55,7 @@ const TabelaListagem = ({
           {displayedContent?.map((content) => (
             <RowTable key={content.id}>
               {columns.map((column) => (
-                <td key={column.accessor}>
+                <td key={column.accessor} onClick={() => onDetails(content)}>
                   {column.render
                     ? column.render(content[column.accessor])
                     : content[column.accessor]}
@@ -83,7 +85,7 @@ const TabelaListagem = ({
           siblingCount={1}
           boundaryCount={0}
         />
-        <ButtonNew onClick={handleClickOpenDialog}>+ Novo</ButtonNew>
+        <ButtonNew onClick={handleClickOpenEdit}>+ Novo</ButtonNew>
       </PaginationButtonContainer>
       {abrirCaixaExclusao && (
         <CaixaExclusao

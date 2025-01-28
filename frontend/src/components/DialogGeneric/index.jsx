@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 
-export const DialogNewForm = ({
+export const DialogGeneric = ({
   titulo,
   open,
   handleClick,
@@ -23,4 +23,4 @@ export const DialogNewForm = ({
   );
 };
 
-export default DialogNewForm;
+export default DialogGeneric;

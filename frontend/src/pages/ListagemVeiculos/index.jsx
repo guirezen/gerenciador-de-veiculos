@@ -1,17 +1,19 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
-import DialogNewForm from "../../components/DialogNewForm";
+import DialogGeneric from "../../components/DialogGeneric";
 import ListagemConteudo from "../../components/ListagemConteudo";
 import TituloBuscadorListagem from "../../components/TituloBuscadorListagem";
 import { deleteVeiculo, getVeiculoByFiltro, getVeiculos } from "../../services/veiculosService";
+import DetalhesVeiculo from "../DetalhesVeiculo";
 import FormVeiculo from "../FormVeiculo";
 import { ContainerTitulo, MainContainer } from "./styles";
 
 const ListagemVeiculos = () => {
-  const [openDialog, setOpenDialog] = useState(false);
+  const [OpenEdit, setOpenEdit] = useState(false);
   const [veiculoSelected, setVeiculoSelected] = useState();
   const [filters, setFilters] = useState("");
+  const [abrirDetalhesVeiculo, setAbrirDetalhesVeiculo] = useState(false);
 
   const queryClient = useQueryClient();
 
@@ -37,8 +39,12 @@ const ListagemVeiculos = () => {
     { label: "Preço", accessor: "preco" },
   ];
 
-  const handleClickOpenDialog = () => {
-    setOpenDialog(!openDialog);
+  const handleClickOpenEdit = () => {
+    setOpenEdit(!OpenEdit);
+  };
+
+  const handleClickOpenDetails = () => {
+    setAbrirDetalhesVeiculo(!abrirDetalhesVeiculo);
   };
 
   const handleDeleteVeiculo = (id) => {
@@ -55,8 +61,13 @@ const ListagemVeiculos = () => {
 
   const openEditVeiculo = (veiculo) => {
     setVeiculoSelected(veiculo);
-    handleClickOpenDialog();
+    handleClickOpenEdit();
   };
+
+  const openDetails = (veiculo) => {
+    setVeiculoSelected(veiculo);
+    handleClickOpenDetails();
+  }
 
   return (
     <MainContainer>
@@ -64,18 +75,27 @@ const ListagemVeiculos = () => {
         <TituloBuscadorListagem titulo={"Veículos"} setFilters={setFilters} />
       </ContainerTitulo>
 
-      <DialogNewForm
+      <DialogGeneric
         titulo={"Novo Veículo"}
-        handleClick={handleClickOpenDialog}
-        open={openDialog}
+        handleClick={handleClickOpenEdit}
+        open={OpenEdit}
         setVeiculoSelected={setVeiculoSelected}
       >
         <FormVeiculo
-          handleClick={handleClickOpenDialog}
+          handleClick={handleClickOpenEdit}
           veiculoSelected={veiculoSelected}
           setVeiculoSelected={setVeiculoSelected}
         />
-      </DialogNewForm>
+      </DialogGeneric>
+
+      <DialogGeneric
+        titulo={"Detalhes Veículo"}
+        handleClick={openDetails}
+        open={abrirDetalhesVeiculo}
+        setVeiculoSelected={setVeiculoSelected}
+      >
+        <DetalhesVeiculo veiculo={veiculoSelected} />
+      </DialogGeneric>
 
       <ListagemConteudo
         listaConteudo={data}
@@ -85,8 +105,9 @@ const ListagemVeiculos = () => {
         errorMessage={error?.message}
         columnsTabela={columns}
         onDelete={onDelete}
-        handleEdit={openEditVeiculo}
-        handleClickOpenDialog={handleClickOpenDialog}
+        onEdit={openEditVeiculo}
+        onDetails={openDetails}
+        handleClickOpenEdit={handleClickOpenEdit}
       />
     </MainContainer>
   );
