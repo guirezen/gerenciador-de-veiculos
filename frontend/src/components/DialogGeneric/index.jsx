@@ -3,16 +3,16 @@ import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 export const DialogGeneric = ({
   titulo,
   open,
-  handleClick,
+  handleClickOpen,
   children,
-  setVeiculoSelected
+  setVeiculoSelected,
 }) => {
   return (
     <Dialog
       open={open}
       onClose={() => {
-        handleClick();
-        setVeiculoSelected("");
+        handleClickOpen();
+        setVeiculoSelected(null);
       }}
       fullWidth
       maxWidth={"sm"}

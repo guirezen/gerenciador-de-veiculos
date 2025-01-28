@@ -42,7 +42,7 @@ export const putVeiculo = async (data) => {
 };
 
 export const getVeiculoByFiltro = async (searchTerm) => {
-  console.log("termo de busca: ", searchTerm);
+  ("termo de busca: ", searchTerm);
   try {
     const response = await Api.get("/filtro", {
       params: { searchTerm },

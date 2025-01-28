@@ -24,7 +24,7 @@ const TabelaListagem = ({
   onDelete,
   onEdit,
   onDetails,
-  handleClickOpenEdit,
+  handleClickOpenForm,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [abrirCaixaExclusao, setAbrirCaixaExclusao] = useState(false);
@@ -85,7 +85,7 @@ const TabelaListagem = ({
           siblingCount={1}
           boundaryCount={0}
         />
-        <ButtonNew onClick={handleClickOpenEdit}>+ Novo</ButtonNew>
+        <ButtonNew onClick={handleClickOpenForm}>+ Novo</ButtonNew>
       </PaginationButtonContainer>
       {abrirCaixaExclusao && (
         <CaixaExclusao

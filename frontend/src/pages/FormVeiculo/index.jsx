@@ -6,15 +6,15 @@ import { Controller, useForm } from "react-hook-form";
 import { postVeiculo, putVeiculo } from "../../services/veiculosService";
 import { ContainerButtons, ContainerForm } from "./styles";
 
-const FormVeiculo = ({ handleClick, veiculoSelected, setVeiculoSelected }) => {
+const FormVeiculo = ({ handleClickOpen, veiculoSelected, setVeiculoSelected }) => {
   const [typeSelected, setTypeSelected] = useState("");
   const { control, handleSubmit, reset } = useForm();
 
   const queryClient = useQueryClient();
 
   const onSubmit = (data) => {
-    console.log("passa aqui: ", veiculoSelected);
-    if (veiculoSelected.id) {
+    ("passa aqui: ", veiculoSelected);
+    if (veiculoSelected?.id) {
       const newData = { ...data, id: veiculoSelected.id };
       putVeiculoMutation.mutate(newData);
     } else {
@@ -25,11 +25,11 @@ const FormVeiculo = ({ handleClick, veiculoSelected, setVeiculoSelected }) => {
   const postVeiculoMutation = useMutation({
     mutationFn: (data) => postVeiculo(data),
     onSuccess: (response) => {
-      console.log("Veiculo cadastrado com sucesso!", response);
+      console.log("Veiculo cadastrado com sucesso!");
 
       queryClient.invalidateQueries(["veiculos"]);
       queryClient.fetchQuery(["veiculos"]);
-      handleClick();
+      handleClickOpen();
     },
     onError: (error) => console.error("Erro ao cadastrar o veículo", error),
   });
@@ -41,7 +41,8 @@ const FormVeiculo = ({ handleClick, veiculoSelected, setVeiculoSelected }) => {
 
       queryClient.invalidateQueries(["veículos"]);
       queryClient.fetchQuery(["veículos"]);
-      handleClick();
+      handleClickOpen();
+      setVeiculoSelected(null);
     },
     onError: (error) => console.error("Erro ao editar o veículo: ", error),
   });
@@ -72,7 +73,7 @@ const FormVeiculo = ({ handleClick, veiculoSelected, setVeiculoSelected }) => {
           name="modelo"
           control={control}
           defaultValue=""
-          rules={{ required: "O modelo é obrigatório" }}
+          rules={{ required: "O modelo é obrigatório",  }}
           render={({ field, fieldState: { error } }) => (
             <TextField
               id="outlined-basic"
@@ -252,7 +253,7 @@ const FormVeiculo = ({ handleClick, veiculoSelected, setVeiculoSelected }) => {
       <ContainerButtons>
         <Button
           onClick={() => {
-            handleClick();
+            handleClickOpen();
             setVeiculoSelected("")
           }}
         >

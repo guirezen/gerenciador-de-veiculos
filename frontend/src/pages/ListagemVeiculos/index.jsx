@@ -11,7 +11,7 @@ import { ContainerTitulo, MainContainer } from "./styles";
 
 const ListagemVeiculos = () => {
   const [OpenEdit, setOpenEdit] = useState(false);
-  const [veiculoSelected, setVeiculoSelected] = useState();
+  const [veiculoSelected, setVeiculoSelected] = useState(null);
   const [filters, setFilters] = useState("");
   const [abrirDetalhesVeiculo, setAbrirDetalhesVeiculo] = useState(false);
 
@@ -39,7 +39,7 @@ const ListagemVeiculos = () => {
     { label: "Preço", accessor: "preco" },
   ];
 
-  const handleClickOpenEdit = () => {
+  const handleClickOpenForm = () => {
     setOpenEdit(!OpenEdit);
   };
 
@@ -61,13 +61,13 @@ const ListagemVeiculos = () => {
 
   const openEditVeiculo = (veiculo) => {
     setVeiculoSelected(veiculo);
-    handleClickOpenEdit();
+    handleClickOpenForm();
   };
 
   const openDetails = (veiculo) => {
     setVeiculoSelected(veiculo);
     handleClickOpenDetails();
-  }
+  };
 
   return (
     <MainContainer>
@@ -77,25 +77,26 @@ const ListagemVeiculos = () => {
 
       <DialogGeneric
         titulo={"Novo Veículo"}
-        handleClick={handleClickOpenEdit}
+        handleClickOpen={handleClickOpenForm}
         open={OpenEdit}
         setVeiculoSelected={setVeiculoSelected}
       >
         <FormVeiculo
-          handleClick={handleClickOpenEdit}
+          handleClickOpen={handleClickOpenForm}
           veiculoSelected={veiculoSelected}
           setVeiculoSelected={setVeiculoSelected}
         />
       </DialogGeneric>
 
-      <DialogGeneric
-        titulo={"Detalhes Veículo"}
-        handleClick={openDetails}
-        open={abrirDetalhesVeiculo}
-        setVeiculoSelected={setVeiculoSelected}
-      >
-        <DetalhesVeiculo veiculo={veiculoSelected} />
-      </DialogGeneric>
+      {veiculoSelected && (
+        <DialogGeneric
+          titulo={"Detalhes Veículo"}
+          handleClickOpen={openDetails}
+          open={abrirDetalhesVeiculo}
+        >
+          <DetalhesVeiculo veiculo={veiculoSelected} />
+        </DialogGeneric>
+      )}
 
       <ListagemConteudo
         listaConteudo={data}
@@ -107,7 +108,7 @@ const ListagemVeiculos = () => {
         onDelete={onDelete}
         onEdit={openEditVeiculo}
         onDetails={openDetails}
-        handleClickOpenEdit={handleClickOpenEdit}
+        handleClickOpenForm={handleClickOpenForm}
       />
     </MainContainer>
   );

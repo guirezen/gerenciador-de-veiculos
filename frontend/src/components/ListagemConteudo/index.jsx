@@ -13,7 +13,7 @@ const ListagemConteudo = ({
   onDelete,
   onEdit,
   onDetails,
-  handleClickOpenEdit
+  handleClickOpenForm
 }) => {
   const listSkeleton = [1, 2, 3];
 
@@ -34,7 +34,7 @@ const ListagemConteudo = ({
             onDelete={onDelete}   
             onEdit={onEdit}
             onDetails={onDetails}
-            handleClickOpenEdit={handleClickOpenEdit}
+            handleClickOpenForm={handleClickOpenForm}
         />
       )}
     </div>
