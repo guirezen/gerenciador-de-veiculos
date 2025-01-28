@@ -1,10 +1,10 @@
-import { validarCombustível } from "../../utils/validations";
 import { Button, MenuItem, TextField } from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 import { postVeiculo, putVeiculo } from "../../services/veiculosService";
+import { validarCombustível } from "../../utils/validations";
 import { ContainerButtons, ContainerForm } from "./styles";
 
 const FormVeiculo = ({
@@ -245,6 +245,7 @@ const FormVeiculo = ({
                 typeSelected === "moto"
                   ? "As cilindradas são obrigatórias"
                   : false,
+              validate: (value) => value > 0 || "A cilindrada deve ser maior que 0",
             }}
             render={({ field, fieldState: { error } }) => (
               <TextField
