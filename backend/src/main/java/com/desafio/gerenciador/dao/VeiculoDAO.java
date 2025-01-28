@@ -13,26 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 public class VeiculoDAO {
-    public void inserirVeiculo(String modelo, String fabricante, int ano, double preco, String tipo) {
-        String sql = "INSERT INTO veiculos (modelo, fabricante, ano, preco, tipo) VALUES (?, ?, ?, ?, ?)";
-
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
-
-            stmt.setString(1, modelo);
-            stmt.setString(2, fabricante);
-            stmt.setInt(3, ano);
-            stmt.setDouble(4, preco);
-            stmt.setString(5, tipo);
-
-            stmt.executeUpdate();
-            System.out.println("Veículo inserido com sucesso!");
-
-
-        } catch (SQLException e) {
-            System.err.println("Erro ao inserir veículo: " + e.getMessage());
-        }
-    }
 
     public List<Map<String, Object>> consultarTodosVeiculos() {
         String sql = """
@@ -123,31 +103,6 @@ public class VeiculoDAO {
         return veiculos;
     }
 
-    public void atualizarVeiculo(int id, String modelo, String fabricante, int ano, double preco) {
-        String sql = "UPDATE veiculos SET modelo = ?, fabricante = ?, ano = ?, preco = ? WHERE id = ?";
-
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
-
-            stmt.setString(1, modelo);
-            stmt.setString(2, fabricante);
-            stmt.setInt(3, ano);
-            stmt.setDouble(4, preco);
-            stmt.setInt(5, id);
-
-            int rowsUpdate = stmt.executeUpdate();
-
-            if (rowsUpdate > 0) {
-                System.out.println("Veículo atualizado com sucesso!");
-            } else {
-                System.out.println("Nenhum veículo encontrado com o ID informado.");
-            }
-
-        } catch (SQLException e) {
-            System.err.println("Erro ao tentar atualizar o veículo: " + e.getMessage());
-        }
-    }
-
     public void removerVeiculo(int id) {
         String sql = "DELETE FROM veiculos WHERE id = ?";
 
@@ -195,24 +150,5 @@ public class VeiculoDAO {
         }
 
         return veiculo;
-    }
-
-    private List<Veiculo> mapearVeiculos(ResultSet rs) throws SQLException {
-        List<Veiculo> veiculos = new ArrayList<>();
-
-        while (rs.next()) {
-            Veiculo veiculo = new Veiculo();
-
-            veiculo.setId(rs.getInt("id"));
-            veiculo.setAno(rs.getInt("ano"));
-            veiculo.setFabricante(rs.getString("fabricante"));
-            veiculo.setModelo(rs.getString("modelo"));
-            veiculo.setTipo(rs.getString("tipo"));
-            veiculo.setPreco(rs.getDouble("preco"));
-
-            veiculos.add(veiculo);
-        }
-
-        return veiculos;
     }
 }
