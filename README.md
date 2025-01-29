@@ -7,7 +7,7 @@ Este é o sistema completo **Gerenciador de Veículos**, composto por um backend
 ## **Backend**
 
 ### **Tecnologias Utilizadas**
-- **Java 17**
+- **Java 23**
 - **Spark Java**
 - **PostgreSQL** (Banco de dados)
 - **Docker** e **Docker Compose**
